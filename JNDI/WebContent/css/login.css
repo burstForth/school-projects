@@ -1,0 +1,8 @@
+body{
+	width:100%;/* 宽 */
+	height:100%;/* 高 */
+	background-image:url(../images/15121159592ccc6f000ca28b45.jpg);/* 设置背景 */
+}
+center{
+	margin-top:20%;/* 设置距离上面多远 */
+}

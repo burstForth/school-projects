@@ -1,0 +1,56 @@
+body{
+	width:100%;
+	height:100%;
+	background-image:url(../images/1515304359fcb924f790f36dd2.jpg);
+}
+a{
+	text-decoration:none;
+}
+#news{
+	position:relative;
+	width:600px;
+	height:300px;
+	margin-left:18%;
+	/* border:1px solid black; */
+}
+#you{
+	position:absolute;
+	right:0;
+	bottom:0
+}
+#bottom{
+	width:1000px;
+	height:350px;
+	margin-left:18%;
+	/* border:1px solid black; */
+}¡¢
+#d1{
+float:left;
+} 
+#txtCon{
+	float:left;
+}
+#txtCon1{
+	float:left;
+}
+#shu{
+	margin-top:10px;
+	height:30px;
+}
+/* h2{
+	margin-top:290px;
+}
+
+
+#send{
+	float:left;
+	margin-left:1025px;
+	height:30px;
+	border:1px solid black;
+}
+#find{
+	float:left;
+	clear:both;
+}
+
+*/
