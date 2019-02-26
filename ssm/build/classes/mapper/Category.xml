@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+    <mapper namespace="mapper.CategoryMapper">
+    <!--     <insert id="add" parameterType="Category" >
+            insert into t_admin ( userName ) values (#{userName})   
+        </insert>
+        <select id="get" parameterType="_int" resultType="Category">
+            select * from   category_  where id= #{id}   
+        </select>
+ 
+        <update id="update" parameterType="Category" >
+            update category_ set name=#{name} where id=#{id}   
+        </update>
+        -->
+        <insert id="add" parameterType="Integer">
+            insert into t_kecheng ( bianhao,mingcheng,keshi ) values (#{0},#{1},#{2})   
+        </insert>
+        <insert id="addone" parameterType="Integer">
+            insert into t_laoshi ( bianhao,xingming,xingbie,nianling,zhicheng,loginname,loginpw) values (#{0},#{1},#{2},#{3},#{4},#{5},#{6})   
+        </insert>
+        <insert id="addtwo" parameterType="Integer">
+            insert into t_kebiao ( shijian,jieci,jiaoshi ) values (#{0},#{1},#{2})   
+        </insert>
+        <insert id="addthree" parameterType="Integer">
+            insert into t_xuesheng ( xuehao,xingming,xingbie ,nianling,banji,loginname,loginpw) values (#{0},#{1},#{2},#{3},#{4},#{5},#{6})   
+        </insert>
+        <update id="update" parameterType="Category" >
+            update t_admin set userPw=#{0} where userName=#{1}   
+        </update>
+        <delete id="delete" parameterType="Integer" >
+            delete from t_admin where userId= #{0}  
+        </delete>
+        <delete id="deleteone" parameterType="Integer" >
+            delete from t_kecheng where id= #{0}  
+        </delete>
+        <delete id="deletetwo" parameterType="Integer" >
+            delete from t_bcboth where id= #{0}  
+        </delete>
+        <delete id="deletethree" parameterType="Integer" >
+            delete from t_laoshi where id= #{0}  
+        </delete>
+        <delete id="deletefour" parameterType="Integer" >
+            delete from t_xuesheng where id= #{0}  
+        </delete>
+        <select id="list" resultType="Category">
+            select * from t_admin     
+        </select> 
+
+        <select id="login" resultType="Integer">
+            select * from t_admin
+            <where>
+            <if test="_parameter!=null">
+                and userName= #{0} and userPw= #{1}
+            </if>                
+                          
+        </where>  
+        </select>     
+        <select id="loginLao" resultType="Integer">
+            select * from t_laoshi where loginname= #{0} and loginpw=#{1} 
+        </select>     
+        <select id="teacherList" resultType="teacher">
+            select * from t_laoshi
+              <where>
+            <if test="_parameter!=null">
+                and loginname=#{loginname}
+            </if>        
+        </where> 
+        </select>     
+        <select id="kebiaoList" resultType="kebiao">
+            select * from t_kebiao
+        </select>     
+        <select id="kechengList" resultType="kecheng">
+            select * from t_kecheng
+        </select>     
+        <select id="loginStu" resultType="Integer">
+            select * from t_xuesheng where loginname= #{0} and loginpw=#{1}
+        </select>
+          <select id="studentList" resultType="student">
+            select * from t_xuesheng
+              <where>
+	            <if test="_parameter!=null">
+	                and loginname=#{loginname}
+	            </if>        
+        	  </where>
+        </select>   
+          <select id="bcbothList" resultType="bcboth">
+            select * from t_bcboth
+        </select>   
+    </mapper>
