@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.hnny.mapper.BrandMapper">
+   <select id="findByPage"  resultType="com.cn.hnny.entity.Brand" parameterType="java.util.Map">
+       select * from  tb_brand  where  1=1 
+       <if test="bid!=null and  bid!=''">
+      and bid=#{bid}
+      </if>
+      <if test="bname!=null and  bname!=''">
+      and  bname  LIKE concat(concat('%',#{bname}),'%')
+      </if>
+       <if test="bstatus!=null and  bstatus!=''">
+      and bstatus=#{bstatus}
+      </if>
+       limit #{currpage}, #{rows}
+   </select>
+   
+   <select id="findByCount"  resultType="java.lang.Integer" parameterType="java.util.Map">
+      select count(1) from  tb_brand  where  1=1
+       <if test="bid!=null and  bid!=''">
+      and bid=#{bid}
+      </if>
+      <if test="bname!=null and  bname!=''">
+      and bname=#{bname}
+      </if>
+      <if test="bstatus!=null and  bstatus!=''">
+      and bstatus=#{bstatus}
+      </if>
+      <if test="bname!=null and  bname!=''">
+      and  bname  LIKE concat(concat('%',#{bname}),'%')
+      </if>
+   </select>
+   
+   <select id="find" resultType="com.cn.hnny.entity.Brand" >
+   select * from  tb_brand where 1=1
+     <if test="bid!=null and  bid!=''">
+      and bid=#{bid}
+      </if>
+      <if test="bname!=null and  bname!=''">
+      and bname=#{bname}
+      </if>
+   </select>
+   <insert id="add"  parameterType="com.cn.hnny.entity.Brand">
+      insert into tb_brand value(#{bid},#{btitle},#{bcontent},#{bname},#{uname},#{create_time},#{bstatus})
+   </insert>
+   
+   <delete id="delete" parameterType="com.cn.hnny.entity.Brand">
+       delete from tb_brand where bid=#{bid}
+   </delete>
+   
+   <update id="update" parameterType="com.cn.hnny.entity.Brand">
+    update tb_brand set bstatus=#{bstatus} where bid=#{bid}
+   </update>
+   
+   
+    <delete id="batchDelete" parameterType="java.lang.Integer">
+   delete from tb_brand where bid in
+   <foreach collection="array" open="(" close=")" item="id" separator=",">
+   #{id}
+   </foreach>
+   </delete>
+   
+   
+</mapper>

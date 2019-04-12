@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.hnny.mapper.ProjectTypeMapper">   
+   <select id="find" resultType="com.cn.hnny.entity.ProjectType" >
+   select * from  tb_project_type where 1=1
+    <if test="ptid!=null and  ptid!=''">
+      and ptid=#{ptid}
+      </if>
+       <if test="ptype!=null and  ptype!=''">
+      and ptype=#{ptype}
+      </if>
+   </select>
+</mapper>

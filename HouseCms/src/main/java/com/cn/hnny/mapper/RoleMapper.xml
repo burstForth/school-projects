@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.hnny.mapper.RoleMapper">
+   <resultMap id="RoleMenuMap" type="com.cn.hnny.entity.Role">
+        <id column="rid" property="rid"/>
+        <result column="rname" property="rname"/>
+        <result  column="rstatus" property="rstatus"/>
+        <collection property="listMenu" ofType="com.cn.hnny.entity.Role">
+       <result column="mid" property="mid"/>
+       <result column="mname" property="mname"/>
+       </collection>
+   </resultMap>
+<select id="findByPage"  resultMap="RoleMenuMap" parameterType="java.util.Map">
+      select * from  tb_menu m,tb_role r,tb_role_menu rm where rm.rid=r.rid and rm.mid=m.mid
+     <if test="rid !='' and rid!=null">
+       and rid=#{rid}
+     </if>
+     <if test="mid !='' and mid!=null">
+       and mid=#{mid}
+     </if>
+    <if test="rname!=null and rname!=''">
+     and  r.rname  LIKE concat(concat('%',#{rname}),'%')
+      </if>
+       limit #{currpage},#{rows}
+   </select>
+   
+   <select id="findByCount"  resultType="java.lang.Integer"  parameterType="java.util.Map">
+      select count(1) from  tb_menu m,tb_role r,tb_role_menu rm where rm.rid=r.rid and rm.mid=m.mid
+     <if test="rid !='' and rid!=null">
+       and rid=#{rid}
+     </if>
+     <if test="mid !='' and mid!=null">
+       and mid=#{mid}
+     </if>
+     <if test="rname!=null and rname!=''">
+     and  r.rname  LIKE concat(concat('%',#{rname}),'%')
+      </if>
+      </select>
+      
+      
+      
+   <select id="find" resultType="com.cn.hnny.entity.Role" >
+   select * from tb_role where 1=1
+    <if test="rname!= '' and rname!=null">
+    and rname=#{rname}
+    </if>
+     <if test="rstatus!= '' and rstatus!=null">
+    and rstatus=#{rstatus}
+    </if>
+   
+   </select>
+    <select id="findmidtype" resultType="com.cn.hnny.entity.Role" >
+   select * from tb_role r,tb_menu m,tb_role_menu rm where r.rid=rm.rid and m.mid=rm.mid 
+   <if test="rid != '' and rid!=null">
+   and r.rid=#{rid}
+   </if>
+   <if test="type!= '' and type!=null">
+    and m.type=#{type}
+    </if>
+   </select>
+   
+   
+   
+   <insert id="add"  parameterType="com.cn.hnny.entity.Role">
+      insert into tb_role value(#{rid},#{rname},#{rstatus})
+   </insert>
+
+   
+  <update id="update" parameterType="com.cn.hnny.entity.Role">
+   update tb_role
+   <trim prefix="set" suffixOverrides="," suffix="where rid=#{rid}">
+    <if test="rname!=null and rname!=''">
+     rname=#{rname},
+    </if>
+    <if test="rstatus!=null and rstatus!=''">
+    rstatus=#{rstatus}
+    </if>
+     </trim>
+   </update>
+
+   
+   
+   <delete id="delete" parameterType="com.cn.hnny.entity.Role">
+   delete from tb_role where rid=#{rid}
+   </delete>
+   
+      <insert id="batchAdd" parameterType="java.lang.Integer">
+        insert into tb_role values
+        <foreach collection="array" separator="," item="r">
+         (#{r.rid},#{r.rname})
+        </foreach>
+   </insert>
+   
+   <delete id="batchDelete" parameterType="java.lang.Integer">
+      delete from tb_role where  rid in
+      <foreach collection="array" item="rid" open="(" close=")" separator=",">
+      #{rid}
+      </foreach>
+      </delete>
+</mapper>

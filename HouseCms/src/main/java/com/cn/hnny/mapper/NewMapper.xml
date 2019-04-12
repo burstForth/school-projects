@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.hnny.mapper.NewMapper">
+   <select id="findByPage"  resultType="com.cn.hnny.entity.New" parameterType="java.util.Map">
+       select * from  tb_news where 1=1
+		 <if test="nid!=null and  nid!=''">
+      and nid=#{nid}
+      </if>
+       <if test="ntype!=null and  ntype!=''">
+      and ntype=#{ntype}
+      </if>
+      <if test="nstatus!=null and  nstatus!=''">
+      and nstatus=#{nstatus}
+      </if>
+       limit #{currpage}, #{rows}
+   </select>
+   
+   <select id="findByCount"  resultType="java.lang.Integer" parameterType="java.util.Map">
+       select count(1) from  tb_news  where 1=1
+    <if test="nid!=null and  nid!=''">
+      and nid=#{nid}
+      </if>
+       <if test="ntype!=null and  ntype!=''">
+      and ntype=#{ntype}
+      </if>
+      <if test="nstatus!=null and  nstatus!=''">
+      and nstatus=#{nstatus}
+      </if>
+     
+   </select>
+   
+   <select id="find" resultType="com.cn.hnny.entity.New" >
+   select * from  tb_news  where 1=1
+    <if test="nid!=null and  nid!=''">
+      and nid=#{nid}
+      </if>
+       <if test="ntype!=null and  ntype!=''">
+      and ntype=#{ntype}
+      </if>
+      <if test="nstatus!=null and  nstatus!=''">
+      and nstatus=#{nstatus}
+      </if>
+   </select>
+   <insert id="add"  parameterType="com.cn.hnny.entity.New">
+      insert into tb_news value(#{nid},#{ntitle},#{ncontent},#{ntype},#{uname},#{nname},#{create_time},#{nstatus})
+   </insert>
+   
+   <delete id="delete" parameterType="com.cn.hnny.entity.New">
+       delete from tb_news where nid=#{id}
+   </delete>
+   
+   <update id="update" parameterType="com.cn.hnny.entity.New">
+     update tb_news set nstatus=#{nstatus} where nid=#{nid}
+   </update>
+    <delete id="batchDelete" parameterType="java.lang.Integer">
+       delete from tb_news where nid in
+   <foreach collection="array" open="(" close=")" item="id" separator=",">
+   #{id}
+   </foreach>
+   </delete>
+</mapper>

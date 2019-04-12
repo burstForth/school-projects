@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.hnny.mapper.MenuMapper">
+
+<select id="find" resultType="com.cn.hnny.entity.Menu" >
+   select * from tb_menu where 1=1
+
+   <if test="mname !=null and mname!=''">
+    and  mname=#{mname}
+   </if>
+   <if test="type!=null and type!=''">
+     and type=#{type}
+   </if>
+   <if test="mid !=null and mid!=''">
+   and  mid=#{mid}
+   </if>
+   </select>
+
+   <insert id="add"  parameterType="com.cn.hnny.entity.Menu">
+      insert into tb_menu value(#{mid},#{mname},#{url},#{type},#{parene_id},#{code},#{orderby})
+   </insert>
+   
+   <select id="findByPage"  resultType="com.cn.hnny.entity.Menu" parameterType="java.util.Map">
+      select * from  tb_menu where 1=1
+	   <if test="mname !=null and mname!=''">
+	     and  mname=#{mname}
+	   </if>
+	   <if test="type!=null and type!=''">
+	     and type=#{type}
+	   </if>
+	   <if test="mid !=null and mid!=''">
+	     and  mid=#{mid}
+	   </if>
+       limit #{currpage},#{rows}
+   </select>
+   
+   <select id="findByCount"  resultType="java.lang.Integer" parameterType="java.util.Map">
+      select count(1) from  tb_menu where 1=1
+	   <if test="mname !=null and mname!=''">
+	     and  mname=#{mname}
+	   </if>
+	   <if test="type!=null and type!=''">
+	     and type=#{type}
+	   </if>
+	   <if test="mid !=null and mid!=''">
+	      and  mid=#{mid}
+	   </if>
+   </select>
+</mapper>

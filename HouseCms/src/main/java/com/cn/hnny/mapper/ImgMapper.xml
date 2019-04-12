@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.hnny.mapper.ImgMapper">   
+   <select id="find" resultType="com.cn.hnny.entity.Img" >
+   select * from  tb_img where 1=1
+    <if test="iid!=null and  iid!=''">
+      and iid=#{iid}
+      </if>
+       <if test="type!=null and  type!=''">
+      and type=#{type}
+      </if>
+      <if test="status!=null and  status!=''">
+      and status=#{status}
+      </if>
+   </select>
+   
+   <delete id="delete" parameterType="com.cn.hnny.entity.Img">
+       delete from tb_img where iid=#{iid}
+   </delete>
+   
+   <update id="update" parameterType="com.cn.hnny.entity.Img">
+     update tb_img set status=#{status} where iid=#{iid}
+   </update>
+   
+   <insert id="add"  parameterType="com.cn.hnny.entity.Img">
+   insert into tb_img value(#{iid},#{url},#{type},#{status})
+   </insert>
+</mapper>

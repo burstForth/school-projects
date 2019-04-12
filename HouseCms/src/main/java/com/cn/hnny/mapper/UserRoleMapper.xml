@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.hnny.mapper.UserRoleMapper">
+   <select id="find" resultType="com.cn.hnny.entity.UserRole">
+   select * from tb_user_role where 1=1
+    <if test="uid !='' and uid!=null">
+       and uid=#{uid}
+     </if>
+     <if test="rid !='' and rid!=null">
+       and rid=#{rid}
+     </if>
+   </select>
+   <insert id="add"  parameterType="com.cn.hnny.entity.UserRole">
+      insert into tb_user_role value(#{urid},#{uid},#{rid})
+   </insert>
+   <delete id="delete" parameterType="com.cn.hnny.entity.UserRole">
+   delete from tb_user_role where uid = #{uid}
+   </delete>
+ 
+   
+   
+   <insert id="batchAdd" parameterType="java.lang.Integer">
+   insert into tb_user_role values
+   <foreach collection="array" separator="," item="ur">
+   (#{ur.urid},#{ur.uid},#{ur.rid})
+   </foreach>
+   </insert>
+   
+   <delete id="batchDelete" parameterType="java.lang.Integer">
+   delete from tb_user_role where uid in
+   <foreach collection="array" open="(" close=")" item="id" separator=",">
+   #{id}
+   </foreach>
+   </delete>
+   </mapper>

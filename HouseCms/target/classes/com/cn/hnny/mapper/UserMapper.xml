@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.hnny.mapper.UserMapper">
+<resultMap id="userRoleMap" type="com.cn.hnny.entity.User">
+        <id column="uid" property="uid"/>
+        <result column="uname" property="uname"/>
+        <result column="upwd" property="upwd"/>
+        <result column="phone" property="phone"/>
+        <result column="create_time" property="create_time"/>
+        <result column="ustatus" property="ustatus"/>
+       <collection property="listrole" ofType="com.cn.hnny.entity.Role">
+       <result column="rid" property="rid"/>
+       <result column="rname" property="rname"/>
+       </collection>
+   </resultMap>
+   <select id="findByPage"    resultMap="userRoleMap" parameterType="java.util.Map">
+      select * from  tb_user u,tb_role r,tb_user_role ru where u.uid=ru.uid and r.rid=ru.rid
+     <if test="uid !='' and uid!=null">
+       and uid=#{uid}
+     </if>
+     <if test="uname !='' and uname!=null">
+         and  u.uname  LIKE concat(concat('%',#{uname}),'%')
+     </if>
+      
+       limit #{currpage},#{rows}
+   </select>
+   
+   <select id="findByCount"  resultType="java.lang.Integer" parameterType="java.util.Map">
+    select count(1) from  tb_user u,tb_role r,tb_user_role ru where u.uid=ru.uid and r.rid=ru.rid
+     <if test="uid !='' and uid!=null">
+       and uid=#{uid}
+     </if>
+     <if test="uname !='' and uname!=null">
+         and  u.uname LIKE concat(concat('%',#{uname}),'%')
+     </if>
+   </select>
+   
+   
+   <select id="find" resultType="com.cn.hnny.entity.User" >
+   select * from  tb_user u,tb_role r,tb_user_role ru where u.uid=ru.uid and r.rid=ru.rid
+    <if test="uid!=null and  uid!=''">
+      and u.uid=#{uid}
+      </if>
+      <if test="uname!=null and  uname!=''">
+      and u.uname=#{uname}
+      </if>
+      <if test="upwd!=null and  upwd!=''">
+      and u.upwd=#{upwd}
+      </if>
+      <if test="ustatus!=null and ustatus!=''">
+      and u.ustatus=#{ustatus}
+      </if>
+   </select>
+   <insert id="add"  parameterType="com.cn.hnny.entity.User">
+      insert into tb_user value(#{uid},#{uname},#{upwd},#{phone},#{create_time},#{ustatus})
+   </insert>
+   
+   <delete id="delete" parameterType="com.cn.hnny.entity.User">
+       delete from tb_user where uid=#{uid}
+   </delete>
+   
+   <update id="update" parameterType="com.cn.hnny.entity.User">
+   update tb_user 
+   <trim prefix="set" suffixOverrides="," suffix="where uid=#{uid}">
+    <if test="uname!=null and uname!=''">
+     uname=#{uname},
+    </if>
+    <if test="upwd!=null and upwd!=''">
+    upwd=#{upwd},
+    </if>
+    <if test="phone!=null and phone!=''">
+    phone=#{phone},
+    </if>
+    <if test="uname!=null and uname!=''">
+    uname=#{uname},
+    </if>
+    <if test="create_time!=null and create_time!=''">
+    create_time=#{create_time},
+    </if>
+    <if test="ustatus!=null and ustatus!=''">
+    ustatus=#{ustatus}
+    </if>
+     </trim>
+   </update>
+
+   
+  
+   <insert id="batchAdd" parameterType="java.lang.Integer">
+        insert into tb_user values
+        <foreach collection="array" separator="," item="user">
+         (#{user.id},#{user.uname},#{user.upwd},#{user.phone},#{user.create_time})
+        </foreach>
+   </insert>
+   
+   <delete id="batchDelete" parameterType="java.lang.Integer">
+      delete from tb_user where  uid in
+      <foreach collection="array" item="id" open="(" close=")" separator=",">
+      #{id}
+      </foreach>
+   </delete> 
+
+    <resultMap type="com.cn.hnny.vo.UserRoleMenuVo" id="userRoleMenuMap">
+        <id column="uid" property="uid"/>
+        <result column="uname" property="uname"/>
+        <result column="upwd" property="upwd"/>
+        <result column="rid" property="rid"/>
+        <result column="rname" property="rname"/>
+        <result column="mid" property="mid"/>
+        <result column="mname" property="mname"/>
+        <result column="url" property="url"/>
+        <result column="type" property="type"/>
+        <result column="parene_id" property="parene_id"/>
+        <result column="code" property="code"/>
+        <result column="orderby" property="orderby"/>
+        <result column="create_time" property="create_time"/>
+        <result column="phone" property="phone"/>
+   </resultMap>
+    <select id="findUsersRoleMenuMap" parameterType="java.util.Map" resultMap="userRoleMenuMap">
+      SELECT DISTINCT u.uid,u.uname,u.phone,u.create_time,m.mid,m.mname,m.type,m.code,m.parene_id,m.orderby,m.url from 
+		tb_user u,tb_user_role ur,tb_role_menu rm,tb_menu m,tb_role r
+		where u.uid=ur.uid AND ur.rid=rm.rid and rm.mid=m.mid and r.rid=rm.rid
+		<if test="uname!=null and uname!=''">
+   		  and  u.uname=#{uname}
+   		</if>
+		<if test="falg==1">
+		 and m.parene_id is null
+		</if>
+		<if test="falg==2">
+		  and m.parene_id  is NOT null and m.type='menu'
+		</if>
+		<if test="falg==3">
+		  and m.parene_id  is NOT null and m.type='button'
+		</if>
+		
+		ORDER BY m.orderBy
+   </select>
+</mapper>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.hnny.mapper.ProjectMapper">
+   <select id="findByPage"  resultType="com.cn.hnny.entity.Project" parameterType="java.util.Map">
+       select * from  tb_project p,tb_img i,tb_project_type pt where p.ptid=pt.ptid and i.iid=p.iid
+		 <if test="pid!=null and  pid!=''">
+      and pid=#{pid}
+      </if>
+       <if test="ptype!=null and  ptype!=''">
+      and ptype=#{ptype}
+      </if>
+      <if test="pstatus!=null and  pstatus!=''">
+      and pstatus=#{pstatus}
+      </if>
+      <if test="ptid!=null and ptid!=''">
+      and p.ptid=#{ptid}
+      </if>
+       limit #{currpage}, #{rows}
+   </select>
+   
+   <select id="findByCount"  resultType="java.lang.Integer" parameterType="java.util.Map">
+       select count(1) from  tb_project p,tb_img i,tb_project_type pt where p.ptid=pt.ptid and i.iid=p.iid
+		 <if test="pid!=null and  pid!=''">
+      and pid=#{pid}
+      </if>
+       <if test="ptype!=null and  ptype!=''">
+      and ptype=#{ptype}
+      </if>
+      <if test="pstatus!=null and  pstatus!=''">
+      and pstatus=#{pstatus}
+      </if>
+      <if test="ptid!=null and ptid!=''">
+      and p.ptid=#{ptid}
+      </if>
+   </select>
+   
+   <select id="find" resultType="com.cn.hnny.entity.Project" >
+       select * from  tb_project p,tb_img i,tb_project_type pt where p.ptid=pt.ptid and i.iid=p.iid
+     <if test="pid!=null and  pid!=''">
+      and p.pid=#{pid}
+      </if>
+       <if test="ptype!=null and  ptype!=''">
+      and p.ptype=#{ptype}
+      </if>
+      <if test="pstatus!=null and  pstatus!=''">
+      and p.pstatus=#{pstatus}
+      </if>
+   </select>
+   
+   
+   
+   <select id="findProject" resultType="com.cn.hnny.entity.Project"  >
+   SELECT * FROM tb_img i,tb_project p,tb_project_type pt WHERE p.iid=i.iid AND p.ptid=pt.ptid
+     <if test="pid!=null and  pid!=''">
+      and pid=#{pid}
+      </if>
+      <if test="iid!=null and  iid!=''">
+      and iid=#{iid}
+      </if>
+       <if test="ptype!=null and  ptype!=''">
+      and ptype=#{ptype}
+      </if>
+      
+       <if test="url!=null and  url!=''">
+      and url=#{url}
+      </if>
+      
+      <if test="pname!=null and  pname!=''">
+      and pname=#{pname}
+      </if>
+       <if test="pdescribe!=null and  pdescribe!=''">
+      and pdescribe=#{pdescribe}
+      </if>
+   </select>
+   
+   
+     <update id="update" parameterType="com.cn.hnny.entity.Project">
+      update tb_project set  pstatus=#{pstatus} where pid=#{pid}
+      </update>  
+      
+      
+    <delete id="delete" parameterType="com.cn.hnny.entity.Project">
+    delete from tb_project where pid=#{pid}
+    </delete>
+   
+      
+   
+   <delete id="batchDelete" parameterType="java.lang.Integer">
+      delete from tb_project where  pid in
+      <foreach collection="array" item="pid" open="(" close=")" separator=",">
+      #{pid}
+      </foreach>
+    </delete>
+   
+     <insert id="add"  parameterType="com.cn.hnny.entity.Project">
+      insert into tb_project value(#{pid},#{pname},#{pstatus},#{pdescribe},#{ptid},#{iid})
+     </insert>
+   
+</mapper>
